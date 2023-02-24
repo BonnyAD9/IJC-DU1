@@ -1,3 +1,5 @@
+#include "error.h"
+
 #include <stdio.h> // vfprintf, stderr
 #include <stdarg.h> // va_list, va_start, va_end
 #include <stdlib.h> // exit, EXIT_FAILURE
