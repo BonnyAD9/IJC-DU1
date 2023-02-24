@@ -1,7 +1,7 @@
 #define BITSET_NO_MACRO
 #include "bitset.h"
 
-#include "error.h" // error_exit
+#include "../B/error.h" // error_exit
 
 bitset_t bitset_alloc(bitset_index_t len) {
     bitset_index_t size = (len + BITS_PER_UL - 1) / BITS_PER_UL;
