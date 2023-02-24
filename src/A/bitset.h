@@ -7,10 +7,8 @@
 typedef unsigned long bitset_index_t;
 typedef bitset_index_t *bitset_t;
 
-#define BITS_PER_UL (sizeof(unsigned long) * CHAR_BIT)
-
-_Bool bitset_getbit(bitset_t set, bitset_index_t index);
-
+// number of bits in one item of bitset
+#define BITS_PER_UL (sizeof(bitset_index_t) * CHAR_BIT)
 
 // macros used by the functions, inline functions and macros.
 // basically the bitset implementation only in macros to avoid code repetition
@@ -21,11 +19,12 @@ _Bool bitset_getbit(bitset_t set, bitset_index_t index);
     bitset_index_t len__ =  len; \
     assert(len__ < ULONG_MAX); \
     set_name = calloc( \
-        (len__ + BITS_PER_UL - 1) / BITS_PER_UL, \
+        (len__ + BITS_PER_UL - 1) / BITS_PER_UL + 1, \
         sizeof(bitset_index_t) \
     ); \
     if (!set_name) \
         error_exit(u8"bitset_alloc: Chyba alokace paměti"); \
+    *set_name = len__;\
 })
 
 // all arguments are evaluated only once
@@ -70,12 +69,7 @@ _Bool bitset_getbit(bitset_t set, bitset_index_t index);
 // function definitions in separate file
 #ifndef BITSET_NO_PUBLIC
 
-// bitset_create cannot be created with a function
-
-inline bitset_t bitset_alloc(bitset_index_t len) {
-    bitset_alloc__(set, len);
-    return set;
-}
+// bitset_create and bitset_alloc cannot be created with a function
 
 inline void bitset_free(bitset_t set) {
     bitset_free__(set);
@@ -98,17 +92,20 @@ inline _Bool bitset_getbit(bitset_t set, bitset_index_t index) {
 
 // interface macros
 
-#ifndef USE_INLINE
-
 // this macro creates variable and thus cannot be used as a single statement
 // for example in if
 #define bitset_create(jmeno_pole, velikost) bitset_index_t jmeno_pole[ \
-    ((velikost) + BITS_PER_UL - 1) / BITS_PER_UL \
-] = { 0 }; _Static_assert((velikost) > 0, "length must be positive")
+        ((velikost) + BITS_PER_UL - 1) / BITS_PER_UL \
+    ] = { 0 }; _Static_assert( \
+        (velikost) > 0 && (velikost) < ULONG_MAX, \
+        "length must be positive"\
+    )
 
 // this macro creates variable and thus cannot be used as a single statement
 // for example in if
-#define bitset_alloc(jmeno_pole, velikost) bitset_alloc__(jmeno_pole)
+#define bitset_alloc(jmeno_pole, velikost) bitset_alloc__(jmeno_pole, velikost)
+
+#ifndef USE_INLINE
 
 #define bitset_free(jmeno_pole) bitset_free__(jmeno_pole)
 
@@ -119,8 +116,8 @@ inline _Bool bitset_getbit(bitset_t set, bitset_index_t index) {
 
 // calls the inline function to ensure that each argument is evaluated
 // only once
-#define bitset_getbit(jmeno_pole, index, vyraz) \
-    bitset_getbit(jmeno_pole, index, vyraz)
+#define bitset_getbit(jmeno_pole, index) \
+    bitset_getbit(jmeno_pole, index)
 
 #endif // #ifndef USE_INLINE
 

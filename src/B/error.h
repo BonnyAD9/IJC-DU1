@@ -1,1 +1,1 @@
-_Noreturn void error_exit(const char fmt, ...);
+_Noreturn void error_exit(const char *fmt, ...);

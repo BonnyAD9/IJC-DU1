@@ -1,7 +1,7 @@
 #define BITSET_NO_PUBLIC // avoid name collisions
 #include "bitset.h"
 
-// also define the non inline functions for builds with no optimizations
+// also define the non inline functions for builds with no optimizations (-O0)
 
 bitset_t bitset_alloc(bitset_index_t len) {
     bitset_alloc__(set, len);
