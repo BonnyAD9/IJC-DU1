@@ -5,14 +5,19 @@
 void Eratosthenes(bitset_t pole);
 
 int main() {
-    bitset_alloc(set, 3000);
+    bitset_alloc(set, 230000000); // 230 mil is surely not prime
 
     Eratosthenes(set);
 
-    bitset_index_t pi = 0;
-    for (bitset_index_t i = 0; i < bitset_size(set); ++i) {
-        if (bitset_getbit(set, i))
-            printf("%lu %lu\n", ++pi, i);
+    // get the index of the 10th prime from the end
+    bitset_index_t pi = bitset_size(set) - 1;
+    for (int n = 0; n < 10; --pi)
+        n += (bitset_getbit(set, pi));
+
+    // print the last 10 primes
+    for (; pi < bitset_size(set); ++pi) {
+        if (bitset_getbit(set, pi))
+            printf("%lu\n", pi);
     }
 
     bitset_free(set);

@@ -3,11 +3,6 @@
 
 // also define the non inline functions for builds with no optimizations (-O0)
 
-bitset_t bitset_alloc(bitset_index_t len) {
-    bitset_alloc__(set, len);
-    return set;
-}
-
 void bitset_free(bitset_t set) {
     bitset_free__(set);
 }
