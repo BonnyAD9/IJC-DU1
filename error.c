@@ -14,6 +14,7 @@
 _Noreturn void error_exit(const char *fmt, ...) {
     va_list l;
     va_start(l, fmt);
+    fprintf(stderr, "Error: ");
     vfprintf(stderr, fmt, l);
     fprintf(stderr, "\n");
     va_end(l);
