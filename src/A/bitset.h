@@ -1,5 +1,5 @@
-#include <limits.h> // CHAR_BIT
-#include <stdlib.h> // calloc
+#include <limits.h> // CHAR_BIT, ULONG_MAX
+#include <stdlib.h> // calloc, free
 #include <assert.h> // assert
 
 #include "../B/error.h" // error_exit
@@ -12,20 +12,6 @@ typedef bitset_index_t *bitset_t;
 
 // macros used by the functions, inline functions and macros.
 // basically the bitset implementation only in macros to avoid code repetition
-
-// creates variable -> cannot be used as single statement for example in if
-// second argument is evaluated only once
-#define bitset_alloc__(set_name, len) bitset_t set_name; ({ \
-    bitset_index_t len__ =  len; \
-    assert(len__ < ULONG_MAX); \
-    set_name = calloc( \
-        (len__ + BITS_PER_UL - 1) / BITS_PER_UL + 1, \
-        sizeof(bitset_index_t) \
-    ); \
-    if (!set_name) \
-        error_exit(u8"bitset_alloc: Chyba alokace paměti"); \
-    *set_name = len__;\
-})
 
 // all arguments are evaluated only once
 #define bitset_free__(set) free(set)
@@ -103,7 +89,17 @@ inline _Bool bitset_getbit(bitset_t set, bitset_index_t index) {
 
 // this macro creates variable and thus cannot be used as a single statement
 // for example in if
-#define bitset_alloc(jmeno_pole, velikost) bitset_alloc__(jmeno_pole, velikost)
+#define bitset_alloc(set_name, len) bitset_t set_name; ({ \
+    bitset_index_t len__ =  len; \
+    assert(len__ < ULONG_MAX); \
+    set_name = calloc( \
+        (len__ + BITS_PER_UL - 1) / BITS_PER_UL + 1, \
+        sizeof(bitset_index_t) \
+    ); \
+    if (!set_name) \
+        error_exit(u8"bitset_alloc: Chyba alokace paměti"); \
+    *set_name = len__;\
+})
 
 #ifndef USE_INLINE
 

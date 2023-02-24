@@ -1,5 +1,6 @@
-#include "bitset.h"
-#include <stdio.h>
+#include "bitset.h" // bitset_alloc, bitset_size, bitset_getbit, bitset_setbit,
+                    // bitset_free, bitset_index_t, bitset_t
+#include <stdio.h> // printf
 
 void Eratosthenes(bitset_t pole);
 
