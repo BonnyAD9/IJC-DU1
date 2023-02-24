@@ -8,11 +8,11 @@
 #include <stdio.h> // printf, fprintf, stderr
 #include <time.h> // clock_t, clock, CLOCKS_PER_SEC
 
-#include "bitset.h" // bitset_alloc, bitset_size, bitset_getbit, bitset_setbit,
+#include "bitset.h" // bitset_create, bitset_size, bitset_getbit, bitset_setbit,
                     // bitset_free, bitset_index_t, bitset_t
 
 void call_eratosthnes(void);
-void Eratosthenes(bitset_t pole);
+void eratosthenes(bitset_t pole);
 
 int main(void) {
     clock_t start = clock();
@@ -25,7 +25,7 @@ int main(void) {
 void call_eratosthnes(void) {
     bitset_create(set, 230000000); // 230 mil is surely not prime
 
-    Eratosthenes(set);
+    eratosthenes(set);
 
     // get the index of the 10th prime from the end
     bitset_index_t pi = bitset_size(set) - 1;
