@@ -2,7 +2,7 @@
 #include <stdlib.h> // calloc, free
 #include <assert.h> // assert
 
-#include "../B/error.h" // error_exit
+#include "error.h" // error_exit
 
 typedef unsigned long bitset_index_t;
 typedef bitset_index_t *bitset_t;

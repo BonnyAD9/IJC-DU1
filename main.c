@@ -1,10 +1,20 @@
 #include "bitset.h" // bitset_alloc, bitset_size, bitset_getbit, bitset_setbit,
                     // bitset_free, bitset_index_t, bitset_t
-#include <stdio.h> // printf
+#include <stdio.h> // printf, fprintf, stderr
+#include <time.h> // clock_t, clock, CLOCKS_PER_SEC
 
+void call_eratosthnes();
 void Eratosthenes(bitset_t pole);
 
 int main() {
+    clock_t start = clock();
+
+    call_eratosthnes();
+
+    fprintf(stderr, "Time=%.3g\n", (double)(clock() - start) / CLOCKS_PER_SEC);
+}
+
+void call_eratosthnes() {
     bitset_alloc(set, 230000000); // 230 mil is surely not prime
 
     Eratosthenes(set);
