@@ -9,7 +9,7 @@
 #include <time.h> // clock_t, clock, CLOCKS_PER_SEC
 
 #include "bitset.h" // bitset_create, bitset_size, bitset_getbit, bitset_setbit,
-                    // bitset_free, bitset_index_t, bitset_t
+                    // bitset_index_t, bitset_t
 
 void call_eratosthnes(void);
 void eratosthenes(bitset_t pole);
