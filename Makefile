@@ -1,6 +1,7 @@
 # Makefile
 # Řešení IJC-DU1, příklad a) a b), 25.2. 2023
 # Autor: Jakub Antonín Štigler, FIT
+# makefile je udělaná pro linux
 # možnosti překladu:
 #   make                     # stejné jako 'make all'
 #   make all                 # zkompiluje vše
@@ -40,7 +41,7 @@ primes-i: general primes-i-m
 steg-decode: general steg-decode-m
 
 clean:
-	rm obj/release/*.o obj/debug/*.o primes primes-i steg-decode
+	rm obj/release/*.o obj/debug/*.o primes primes-i steg-decode || true
 
 # target for creating directories for object files
 general:
