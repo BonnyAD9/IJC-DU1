@@ -1,11 +1,24 @@
-CC=clang
+# Makefile
+# Řešení IJC-DU1, příklad a) a b), 25.2. 2023
+# Autor: Jakub Antonín Štigler, FIT
+# možnosti překladu:
+#   make          # zkompiluje vše
+#   make all      # zkompiluje vše
+#   make debug    # zkompiluje vše s debugovacímy symboly a ASANem
+#   make run      # zkompiluje vše a spustí se zvášenou velikostí stacku
+#   make primes   # zkompiluje úlohu A s makry
+#   make primes-i # zkompiluje úlohu A bez maker
+#   make clean    # smaže všechny binární soubory
+# zmena kompileru (výchozí je cc):
+#   make CC=gcc
+
 CFLAGS=-std=c11 -pedantic -Wall -Wextra -O2
 OUT=main
 
 all: primes-m primes-i-m
 
 debug:
-	make run "CFLAGS=$(CFLAGS) -g -fsanitize=address"
+	make all "CFLAGS=$(CFLAGS) -g -fsanitize=address"
 
 run: all
 	ulimit -s 30000 ; ./primes ; ./primes-i
