@@ -13,6 +13,7 @@
 #   make primes-i            # zkompiluje úlohu A s inline funkcemi
 #   make steg-decode         # zkompiluje úlohu B
 #   make clean               # smaže všechny binární soubory
+#   make debug-run-all       # zkompiluje vše jako debug a vše spustí
 # zmena kompileru (výchozí je cc):
 #   make CC=gcc
 
@@ -39,6 +40,13 @@ run: general primes-m primes-i-m
 primes: general primes-m
 primes-i: general primes-i-m
 steg-decode: general steg-decode-m
+
+debug-run-all: general
+	make primes "CFLAGS=$(CFLAGS) -O0 -g -fsanitize=address" DIR=obj/debug/
+	make primes-i "CFLAGS=$(CFLAGS) -O0 -g -fsanitize=address" DIR=obj/debug/
+	make steg-decode "CFLAGS=$(CFLAGS) -O0 -g -fsanitize=address" DIR=obj/debug/
+	ulimit -s 30000 ; ./primes ; ./primes-i
+	./steg-decode du1-obrazek.ppm
 
 clean:
 	rm obj/release/*.o obj/debug/*.o primes primes-i steg-decode || true
