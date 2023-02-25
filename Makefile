@@ -20,7 +20,7 @@ primes-i-m:
 	make primes-g OUT=primes-i "CFLAGS=$(CFLAGS) -DUSE_INLINE"
 
 primes-g: primes.o error.o
-	$(CC) $(CFLAGS) -o $(OUT) primes.o error.o
+	$(CC) $(CFLAGS) -lm -o $(OUT) primes.o error.o
 
 primes.c: bitset.h
 bitset.h: error.c

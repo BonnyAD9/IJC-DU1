@@ -7,6 +7,7 @@
 
 #include <stdio.h> // printf, fprintf, stderr
 #include <time.h> // clock_t, clock, CLOCKS_PER_SEC
+#include <math.h> // sqrt
 
 #include "bitset.h" // bitset_create, bitset_size, bitset_getbit, bitset_setbit,
                     // bitset_index_t, bitset_t
@@ -43,7 +44,7 @@ void call_eratosthnes(void) {
 
 // finds primes. 'bitset_get(set, p) == 1' => p is prime
 // expects that 'set' is filled with zeros
-void Eratosthenes(bitset_t set) {
+void eratosthenes(bitset_t set) {
     bitset_setbit(set, 2, 1); // 2 is prime
 
     // set all odd numbers as prime candidates
@@ -51,8 +52,10 @@ void Eratosthenes(bitset_t set) {
         bitset_setbit(set, i, 1);
     }
 
+    bitset_index_t lim = sqrt(bitset_size(set));
+
     // filter primes
-    for (bitset_index_t i = 3; i < bitset_size(set); ++i) {
+    for (bitset_index_t i = 3; i < lim; ++i) {
         if (!bitset_getbit(set, i))
             continue;
 
