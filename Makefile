@@ -2,13 +2,15 @@
 # Řešení IJC-DU1, příklad a) a b), 25.2. 2023
 # Autor: Jakub Antonín Štigler, FIT
 # možnosti překladu:
-#   make                     # zkompiluje vše
+#   make                     # stejné jako 'make all'
 #   make all                 # zkompiluje vše
 #   make debug               # stejné jako 'make debug TARGET=all'
 #   make debug TARGET=<rule> # stejné jako 'make <rule>' ale pro debugování
-#   make run                 # zkompiluje vše a spustí se zvětšeným stackem
+#   make run                 # zkompiluje úlohu A a spustí se
+#                            # zvětšeným zásobníkem
 #   make primes              # zkompiluje úlohu A s makry
-#   make primes-i            # zkompiluje úlohu A bez maker
+#   make primes-i            # zkompiluje úlohu A s inline funkcemi
+#   make steg-decode         # zkompiluje úlohu B
 #   make clean               # smaže všechny binární soubory
 # zmena kompileru (výchozí je cc):
 #   make CC=gcc
@@ -16,21 +18,21 @@
 # variables that can be changed by the user
 CFLAGS=-std=c11 -pedantic -Wall -Wextra -O2
 # CC=clang
+TARGET=all
 
 # variables modified internaly
 OUT=main
-TARGET=all
 DIR=obj/release/
 
 
 # targets run by the user
 
-all: general primes-m primes-i-m
+all: general primes-m primes-i-m steg-decode
 
 debug: general
 	make $(TARGET) "CFLAGS=$(CFLAGS) -O0 -g -fsanitize=address" DIR=obj/debug/
 
-run: all
+run: general primes-m primes-i-m
 	ulimit -s 30000 ; ./primes ; ./primes-i
 
 primes: general primes-m
@@ -45,6 +47,7 @@ general:
 	mkdir -p obj/debug
 	mkdir -p obj/release
 
+
 # targets for different binaries
 
 primes-m:
@@ -56,7 +59,7 @@ primes-i-m:
 steg-decode-m: $(DIR)primes-nm.o $(DIR)steg-decode.o $(DIR)error.o $(DIR)ppm.o
 	$(CC) $(CFLAGS) -lm -o steg-decode $^
 
-# general target ro compile primes
+# general target to compile primes
 primes-g: $(DIR)primes.o $(DIR)error.o
 	$(CC) $(CFLAGS) -lm -o $(OUT) $^
 
