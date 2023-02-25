@@ -57,10 +57,8 @@ char *decode_file(const char *infile) {
     bitset_free(set);
     ppm_free(img);
 
-    if (utf8_check((unsigned char *)msg)) {
-        free(msg);
+    if (utf8_check((unsigned char *)msg))
         error_exit("decode_file: The message is not valid utf-8:\n%s", msg);
-    }
 
     return msg;
 }
