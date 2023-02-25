@@ -13,10 +13,17 @@
 # zmena kompileru (výchozí je cc):
 #   make CC=gcc
 
+# variables that can be changed by the user
 CFLAGS=-std=c11 -pedantic -Wall -Wextra -O2
+# CC=clang
+
+# variables modified internaly
 OUT=main
 TARGET=all
 DIR=obj/release/
+
+
+# targets run by the user
 
 all: general primes-m primes-i-m
 
@@ -30,9 +37,15 @@ primes: general primes-m
 primes-i: general primes-i-m
 steg-decode: general steg-decode-m
 
+clean:
+	rm obj/release/*.o obj/debug/*.o primes primes-i steg-decode
+
+# target for creating directories for object files
 general:
 	mkdir -p obj/debug
 	mkdir -p obj/release
+
+# targets for different binaries
 
 primes-m:
 	make primes-g OUT=primes
@@ -43,14 +56,12 @@ primes-i-m:
 steg-decode-m: $(DIR)primes-nm.o $(DIR)steg-decode.o $(DIR)error.o $(DIR)ppm.o
 	$(CC) $(CFLAGS) -lm -o steg-decode $^
 
+# general target ro cimpile primes
 primes-g: $(DIR)primes.o $(DIR)error.o
 	$(CC) $(CFLAGS) -lm -o $(OUT) $^
 
-primes.c: bitset.h
-bitset.h: error.c
-error.c: error.h
-steg-decode.c: primes.c bitset.h error.c
-ppm.c: ppm.h error.c
+
+# targets for object files
 
 $(DIR)primes.o: primes.c
 	$(CC) $(CFLAGS) -c -o $@ primes.c
@@ -61,13 +72,18 @@ $(DIR)primes-nm.o: primes.c
 $(DIR)error.o: error.c
 	$(CC) $(CFLAGS) -c -o $@ error.c
 
-$(DIR)steg-decode.o: steg-decode.c ppm.c
+$(DIR)steg-decode.o: steg-decode.c
 	$(CC) $(CFLAGS) -c -o $@ steg-decode.c
 
 $(DIR)ppm.o: ppm.c
 	$(CC) $(CFLAGS) -c -o $@ ppm.c
 
-clean:
-	rm obj/release/*.o obj/debug/*.o primes primes-i steg-decode
+# file dependencies
+primes.c: bitset.h
+bitset.h: error.c
+error.c: error.h
+steg-decode.c: primes.c bitset.h error.c ppm.c
+ppm.c: ppm.h error.c
 
+# disable implicit rules
 .SUFFIXES:
