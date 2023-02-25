@@ -16,12 +16,15 @@
 _Bool _ppm_read_header(FILE *in, unsigned *w, unsigned *h) {
     char c;
     if (fscanf(in, "P6 %u %u 255%c", w, h, &c) != 3) {
-        warning("Invalid/unsupported file header");
+        warning("_ppm_read_header: Invalid/unsupported file header");
         return 0;
     }
 
     if (!isspace(c)) {
-        warning("Expected whitespace after header, found '%c'", c);
+        warning(
+            "_ppm_read_hreader: Expected whitespace after header, found '%c'",
+            c
+        );
         return 0;
     }
 
@@ -31,7 +34,7 @@ _Bool _ppm_read_header(FILE *in, unsigned *w, unsigned *h) {
 struct ppm *ppm_read(const char *filename) {
     FILE *in = fopen(filename, "rb");
     if (!in) {
-        warning("Failed to open file '%s'", filename);
+        warning("ppm_read: Failed to open file '%s'", filename);
         return NULL;
     }
 
@@ -40,7 +43,7 @@ struct ppm *ppm_read(const char *filename) {
         return NULL;
 
     if (w > PPM_MAX_WH || h > PPM_MAX_WH) {
-        warning("Image is too large");
+        warning("ppm_read: Image is too large");
         return NULL;
     }
 
@@ -53,7 +56,7 @@ struct ppm *ppm_read(const char *filename) {
     if (fread(p->data, 3, pcount, in) != pcount) {
         fclose(in);
         ppm_free(p);
-        warning("File is too short");
+        warning("ppm_read: File is too short");
         return NULL;
     }
 

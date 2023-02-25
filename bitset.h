@@ -94,7 +94,7 @@ static inline _Bool bitset_getbit(bitset_t set, bitset_index_t index) {
         ((velikost) + BITS_PER_UL - 1) / BITS_PER_UL + 1 \
     ] = { velikost }; _Static_assert( \
         (velikost) > 0 && (velikost) < ULONG_MAX, \
-        "length must be positive"\
+        "bitset_create: length must be positive"\
     )
 
 // this macro creates variable and thus cannot be used as a single statement

@@ -21,8 +21,6 @@ void decode(char *out, struct ppm *img, bitset_t set);
 unsigned char *utf8_check(unsigned char *s);
 
 int main(int argv, char **argc) {
-    (void)argv;
-    (void)argc;
 
     char *msg = decode_file("du1-obrazek.ppm");
 
@@ -34,7 +32,7 @@ int main(int argv, char **argc) {
 char *decode_file(const char *infile) {
     struct ppm *img = ppm_read(infile);
     if (!img)
-        error_exit("Cannot read ppm file");
+        error_exit("decode_file: Cannot read ppm file");
 
     // calculate the max message size: (img size) / (8 * 3) + 1
     // 8 because 1 byte in message is from 8 bytes in image
@@ -44,7 +42,8 @@ char *decode_file(const char *infile) {
     char *msg = malloc(msg_size);
     if (!msg)
         error_exit(
-            "Failed to allocate space for the message of size %zu",
+            "decode_file: Failed to allocate space for"
+            "the message of size %zu",
             msg_size
         );
 
@@ -57,7 +56,7 @@ char *decode_file(const char *infile) {
 
     if (utf8_check((unsigned char *)msg)) {
         free(msg);
-        error_exit("The message is not valid utf-8:\n%s", msg);
+        error_exit("decode_file: The message is not valid utf-8:\n%s", msg);
     }
 
     return msg;
@@ -82,7 +81,7 @@ void decode(char *out, struct ppm *img, bitset_t set) {
 
     }
 
-    error_exit("The message is not ended with the NULL character");
+    error_exit("decode: The message is not ended with the NULL character");
 }
 
 // function from https://www.cl.cam.ac.uk/~mgk25/ucs/utf8_check.c
