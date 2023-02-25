@@ -56,7 +56,7 @@ primes-i-m:
 steg-decode-m: $(DIR)primes-nm.o $(DIR)steg-decode.o $(DIR)error.o $(DIR)ppm.o
 	$(CC) $(CFLAGS) -lm -o steg-decode $^
 
-# general target ro cimpile primes
+# general target ro compile primes
 primes-g: $(DIR)primes.o $(DIR)error.o
 	$(CC) $(CFLAGS) -lm -o $(OUT) $^
 
