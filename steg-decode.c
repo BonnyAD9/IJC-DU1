@@ -21,8 +21,11 @@ void decode(char *out, struct ppm *img, bitset_t set);
 unsigned char *utf8_check(unsigned char *s);
 
 int main(int argv, char **argc) {
+    if (argv != 2) {
+        error_exit("main: Invalid number of arguments");
+    }
 
-    char *msg = decode_file("du1-obrazek.ppm");
+    char *msg = decode_file(argc[1]);
 
     printf("%s\n", msg);
 
