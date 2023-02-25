@@ -12,18 +12,23 @@
 #include "bitset.h" // bitset_create, bitset_size, bitset_getbit, bitset_setbit,
                     // bitset_index_t, bitset_t
 
-void call_eratosthnes(void);
+void call_eratosthenes(void);
 void eratosthenes(bitset_t pole);
+
+// to reuse the eratosthnes functions in steg-decode.c
+#ifndef PRIMES_NO_MAIN
 
 int main(void) {
     clock_t start = clock();
 
-    call_eratosthnes();
+    call_eratosthenes();
 
     fprintf(stderr, "Time=%.3g\n", (double)(clock() - start) / CLOCKS_PER_SEC);
 }
 
-void call_eratosthnes(void) {
+#endif // #ifndef PRIMES_NO_MAIN
+
+void call_eratosthenes(void) {
     bitset_create(set, 230000000); // 230 mil is surely not prime
 
     eratosthenes(set);

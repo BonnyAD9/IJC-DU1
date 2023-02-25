@@ -7,14 +7,15 @@
 
 #include "ppm.h"
 
-#include <stdio.h> // FILE, fscnaf
+#include <stdio.h> // FILE, fscnaf, fopen, fclose, size_t, fread
 #include <ctype.h> // isspace
+#include <stdlib.h> // free, malloc
 
 #include "error.h" // warning
 
 _Bool _ppm_read_header(FILE *in, unsigned *w, unsigned *h) {
     char c;
-    if (fscanf(in, "P6 %u %u 255%c", w, h, c) != 3) {
+    if (fscanf(in, "P6 %u %u 255%c", w, h, &c) != 3) {
         warning("Invalid/unsupported file header");
         return 0;
     }
