@@ -66,11 +66,11 @@ primes-i-m:
 	make primes-g OUT=primes-i "CFLAGS=$(CFLAGS) -DUSE_INLINE"
 
 steg-decode-m: $(DIR)primes-nm.o $(DIR)steg-decode.o $(DIR)error.o $(DIR)ppm.o
-	$(CC) $(CFLAGS) -lm -o steg-decode $^
+	$(CC) $(CFLAGS) -o steg-decode $^ -lm
 
 # general target to compile primes
 primes-g: $(DIR)primes.o $(DIR)error.o
-	$(CC) $(CFLAGS) -lm -o $(OUT) $^
+	$(CC) $(CFLAGS) -o $(OUT) $^ -lm
 
 
 # targets for object files
