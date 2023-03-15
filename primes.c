@@ -14,9 +14,6 @@
 
 void call_eratosthenes(void);
 
-// to reuse the eratosthnes functions in steg-decode.c
-#ifndef PRIMES_NO_MAIN
-
 int main(void) {
     clock_t start = clock();
 
@@ -24,8 +21,6 @@ int main(void) {
 
     fprintf(stderr, "Time=%.3g\n", (double)(clock() - start) / CLOCKS_PER_SEC);
 }
-
-#endif // #ifndef PRIMES_NO_MAIN
 
 void call_eratosthenes(void) {
     bitset_create(set, 230000000); // 230 mil is surely not prime
