@@ -11,8 +11,7 @@
 #include "ppm.h" // ppm_read, struct ppm, ppm_free
 #include "error.h" // error_exit
 #include "bitset.h" // bitset_t, bitset_alloc, bitset_size, bitset_free
-
-void eratosthenes(bitset_t set); // implemented in primes.c
+#include "eratosthenes.h" // eratosthenes
 
 #define START_PRIME 101
 

@@ -26,6 +26,14 @@ TARGET=all
 OUT=main
 DIR=obj/release/
 
+.DEFAULT_GOAL=all
+
+error.o: error.c error.h
+eratosthenes.c: eratosthenes.h bitset.h error.h
+ppm.o: ppm.c ppm.h error.h
+primes.o: eratosthenes.h bitset.h error.h
+primes-i.o: eratosthenes.h bitset.h error.h
+steg-decode.o: steg-decode.c ppm.h error.h bitset.h eratosthenes.h
 
 # targets run by the user
 
@@ -49,7 +57,7 @@ debug-run-all: general
 	./steg-decode du1-obrazek.ppm
 
 clean:
-	rm obj/release/*.o obj/debug/*.o primes primes-i steg-decode || true
+	rm *.o || true
 
 # target for creating directories for object files
 general:
@@ -59,43 +67,22 @@ general:
 
 # targets for different binaries
 
-primes-m:
-	make primes-g OUT=primes
+primes-m: primes.o error.o eratosthenes.o
+	$(CC) $(CFLAGS) -o primes $^ -lm
 
-primes-i-m:
-	make primes-g OUT=primes-i "CFLAGS=$(CFLAGS) -DUSE_INLINE"
+primes-i-m: primes-i.o error.o eratosthenes.o
+	$(CC) $(CFLAGS) -o primes-i $^ -lm
 
-steg-decode-m: $(DIR)primes-nm.o $(DIR)steg-decode.o $(DIR)error.o $(DIR)ppm.o
+steg-decode-m: eratosthenes.o steg-decode.o error.o ppm.o
 	$(CC) $(CFLAGS) -o steg-decode $^ -lm
-
-# general target to compile primes
-primes-g: $(DIR)primes.o $(DIR)error.o
-	$(CC) $(CFLAGS) -o $(OUT) $^ -lm
-
 
 # targets for object files
 
-$(DIR)primes.o: primes.c
-	$(CC) $(CFLAGS) -c -o $@ primes.c
+primes-i.o: primes.c
+	$(CC) $(CFLAGS) -c -DUSE_INLINE -o $@ primes.c
 
-$(DIR)primes-nm.o: primes.c
-	$(CC) $(CFLAGS) -DPRIMES_NO_MAIN -c -o $@ primes.c
-
-$(DIR)error.o: error.c
-	$(CC) $(CFLAGS) -c -o $@ error.c
-
-$(DIR)steg-decode.o: steg-decode.c
-	$(CC) $(CFLAGS) -c -o $@ steg-decode.c
-
-$(DIR)ppm.o: ppm.c
-	$(CC) $(CFLAGS) -c -o $@ ppm.c
-
-# file dependencies
-primes.c: bitset.h
-bitset.h: error.c
-error.c: error.h
-steg-decode.c: primes.c bitset.h error.c ppm.c
-ppm.c: ppm.h error.c
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 # disable implicit rules
 .SUFFIXES:

@@ -7,13 +7,12 @@
 
 #include <stdio.h> // printf, fprintf, stderr
 #include <time.h> // clock_t, clock, CLOCKS_PER_SEC
-#include <math.h> // sqrt
 
-#include "bitset.h" // bitset_create, bitset_size, bitset_getbit, bitset_setbit,
+#include "bitset.h" // bitset_create, bitset_size, bitset_getbit,
                     // bitset_index_t, bitset_t
+#include "eratosthenes.h" // eratosthenes
 
 void call_eratosthenes(void);
-void eratosthenes(bitset_t pole);
 
 // to reuse the eratosthnes functions in steg-decode.c
 #ifndef PRIMES_NO_MAIN
@@ -45,29 +44,4 @@ void call_eratosthenes(void) {
     }
 
     //bitset_free(set);
-}
-
-// finds primes. 'bitset_get(set, p) == 1' => p is prime
-// expects that 'set' is filled with zeros
-void eratosthenes(bitset_t set) {
-    bitset_setbit(set, 2, 1); // 2 is prime
-
-    // set all odd numbers as prime candidates
-    for (bitset_index_t i = 3; i < bitset_size(set); i += 2) {
-        bitset_setbit(set, i, 1);
-    }
-
-    bitset_index_t lim = sqrt(bitset_size(set));
-
-    // filter primes
-    for (bitset_index_t i = 3; i < lim; ++i) {
-        if (!bitset_getbit(set, i))
-            continue;
-
-        // filter out all multiples of the prime 'i'
-        // (we can start form 'i * i' because all previous multiples of 'i'
-        //  are already filtered by the previos primes)
-        for (bitset_index_t j = i * i; j < bitset_size(set); j += i)
-            bitset_setbit(set, j, 0);
-    }
 }
