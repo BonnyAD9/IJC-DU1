@@ -16,14 +16,14 @@ void eratosthenes(bitset_t set) {
     bitset_index_t lim = sqrt(bitset_size(set));
 
     // filter primes
-    for (bitset_index_t i = 3; i < lim; ++i) {
+    for (bitset_index_t i = 3; i < lim; i += 2) {
         if (!bitset_getbit(set, i))
             continue;
 
         // filter out all multiples of the prime 'i'
         // (we can start form 'i * i' because all previous multiples of 'i'
         //  are already filtered by the previos primes)
-        for (bitset_index_t j = i * i; j < bitset_size(set); j += i)
+        for (bitset_index_t j = i * i; j < bitset_size(set); j += i + i)
             bitset_setbit(set, j, 0);
     }
 }
