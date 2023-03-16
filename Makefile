@@ -37,19 +37,19 @@ steg-decode.o: steg-decode.c ppm.h error.h bitset.h eratosthenes.h
 
 # targets run by the user
 
-all: general primes-m primes-i-m steg-decode
+all:  primes-m primes-i-m steg-decode
 
-debug: general
+debug:
 	make $(TARGET) "CFLAGS=$(CFLAGS) -O0 -g -fsanitize=address" DIR=obj/debug/
 
-run: general primes-m primes-i-m
+run:  primes-m primes-i-m
 	ulimit -s 30000 ; ./primes ; ./primes-i
 
-primes: general primes-m
-primes-i: general primes-i-m
-steg-decode: general steg-decode-m
+primes:  primes-m
+primes-i:  primes-i-m
+steg-decode:  steg-decode-m
 
-debug-run-all: general
+debug-run-all:
 	make primes "CFLAGS=$(CFLAGS) -O0 -g -fsanitize=address" DIR=obj/debug/
 	make primes-i "CFLAGS=$(CFLAGS) -O0 -g -fsanitize=address" DIR=obj/debug/
 	make steg-decode "CFLAGS=$(CFLAGS) -O0 -g -fsanitize=address" DIR=obj/debug/
@@ -58,11 +58,7 @@ debug-run-all: general
 
 clean:
 	rm *.o || true
-
-# target for creating directories for object files
-general:
-	mkdir -p obj/debug
-	mkdir -p obj/release
+	rm primes primes-i steg-decode || true
 
 
 # targets for different binaries
