@@ -1,5 +1,5 @@
 # Makefile
-# Řešení IJC-DU1, příklad a) a b), 16.3. 2023
+# Řešení IJC-DU1, příklad a) a b), 21.3. 2023
 # Autor: Jakub Antonín Štigler, FIT
 # makefile je udělaná pro linux
 # možnosti překladu:
