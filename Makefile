@@ -29,7 +29,8 @@ DIR=obj/release/
 .DEFAULT_GOAL=all
 
 error.o: error.c error.h
-eratosthenes.c: eratosthenes.h bitset.h error.h
+eratosthenes.o: eratosthenes.h bitset.h error.h
+eratosthenes-i.o: eratosthenes.h bitset.h error.h
 ppm.o: ppm.c ppm.h error.h
 primes.o: eratosthenes.h bitset.h error.h
 primes-i.o: eratosthenes.h bitset.h error.h
@@ -66,7 +67,7 @@ clean:
 primes-m: primes.o error.o eratosthenes.o
 	$(CC) $(CFLAGS) -o primes $^ -lm
 
-primes-i-m: primes-i.o error.o eratosthenes.o
+primes-i-m: primes-i.o error.o eratosthenes-i.o
 	$(CC) $(CFLAGS) -o primes-i $^ -lm
 
 steg-decode-m: eratosthenes.o steg-decode.o error.o ppm.o
@@ -74,8 +75,8 @@ steg-decode-m: eratosthenes.o steg-decode.o error.o ppm.o
 
 # targets for object files
 
-primes-i.o: primes.c
-	$(CC) $(CFLAGS) -c -DUSE_INLINE -o $@ primes.c
+%-i.o: %.c
+	$(CC) $(CFLAGS) -c -DUSE_INLINE -o $@ $<
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
