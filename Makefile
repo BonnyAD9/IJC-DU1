@@ -19,12 +19,6 @@
 
 # variables that can be changed by the user
 CFLAGS=-std=c11 -pedantic -Wall -Wextra -O2
-# CC=clang
-TARGET=all
-
-# variables modified internaly
-OUT=main
-DIR=obj/release/
 
 .DEFAULT_GOAL=all
 
